@@ -67,8 +67,7 @@ export function ListLayout<T>({
             if (isMobile) {
               setView('details');
             }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const itemId = (itemElement.props as any).id;
+            const itemId = (itemElement.props as { id: string }).id;
             router.push(`${path}/${itemId}`);
           },
         }
