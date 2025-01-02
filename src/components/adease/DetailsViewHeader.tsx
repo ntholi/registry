@@ -23,6 +23,8 @@ export function DetailsViewHeader({
 }: DetailsViewHeaderProps) {
   const pathname = usePathname();
   const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [view, setView] = useViewSelect();
 
   return (

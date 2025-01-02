@@ -6,13 +6,15 @@ import { FindAllParams } from '../base/BaseRepository';
 type User = typeof users.$inferInsert;
 
 class UserService {
-  constructor(private readonly repository: UserRepository = new UserRepository()) {}
+  constructor(
+    private readonly repository: UserRepository = new UserRepository()
+  ) {}
 
   async first() {
     return withAuth(async () => this.repository.findFirst(), []);
   }
 
-  async get(id: number) {
+  async get(id: string) {
     return withAuth(async () => this.repository.findById(id), []);
   }
 
@@ -24,11 +26,11 @@ class UserService {
     return withAuth(async () => this.repository.create(data), []);
   }
 
-  async update(id: number, data: User) {
+  async update(id: string, data: User) {
     return withAuth(async () => this.repository.update(id, data), []);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return withAuth(async () => this.repository.delete(id), []);
   }
 

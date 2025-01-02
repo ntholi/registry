@@ -22,7 +22,7 @@ import { SearchField } from './SearchField';
 export type ListLayoutProps<T> = {
   getItems: (
     page: number,
-    search: string,
+    search: string
   ) => Promise<{ items: T[]; pages: number }>;
   renderItem: (item: T) => React.ReactNode;
   path: string;
@@ -67,10 +67,11 @@ export function ListLayout<T>({
             if (isMobile) {
               setView('details');
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const itemId = (itemElement.props as any).id;
             router.push(`${path}/${itemId}`);
           },
-        },
+        }
       );
     }
     return itemElement;

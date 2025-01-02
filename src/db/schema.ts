@@ -6,11 +6,13 @@ import {
 } from 'drizzle-orm/sqlite-core';
 import type { AdapterAccountType } from 'next-auth/adapters';
 
+export const userRoles = ['admin', 'student'] as const;
 export const users = sqliteTable('users', {
   id: text()
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text(),
+  role: text({ enum: userRoles }).notNull().default('student'),
   email: text().unique(),
   emailVerified: integer({ mode: 'timestamp_ms' }),
   image: text(),

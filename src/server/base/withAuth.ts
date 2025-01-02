@@ -1,13 +1,13 @@
 'use server';
 
 import { auth } from '@/auth';
-import { users } from '@/db/schema/auth';
+import { users } from '@/db/schema';
 
 type Role = (typeof users.$inferSelect)['role'] | 'all';
 
 export default async function withAuth<T>(
   fn: () => Promise<T>,
-  roles: Role[] = [],
+  roles: Role[] = []
 ) {
   const stack = new Error().stack;
   const callerLine = stack?.split('\n')[2] || '';
