@@ -7,6 +7,8 @@ import {
 import type { AdapterAccountType } from 'next-auth/adapters';
 
 export const userRoles = ['admin', 'student'] as const;
+export type UserRole = (typeof userRoles)[number];
+
 export const users = sqliteTable('users', {
   id: text()
     .primaryKey()

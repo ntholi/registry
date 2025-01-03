@@ -1,28 +1,40 @@
 'use client';
 import { Shell } from '@/components/adease';
-import { ActionIcon, Avatar, Flex, Group, Stack, Text, LoadingOverlay, Image } from '@mantine/core';
+import {
+  ActionIcon,
+  Avatar,
+  Flex,
+  Group,
+  Stack,
+  Text,
+  LoadingOverlay,
+  Image,
+} from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import React from 'react'
-import { Icon, IconChevronRight, IconLogout2, IconUsers } from '@tabler/icons-react';
+import React from 'react';
+import {
+  Icon,
+  IconChevronRight,
+  IconLogout2,
+  IconUsers,
+} from '@tabler/icons-react';
 import { usePathname } from 'next/navigation';
 import { Indicator, NavLink } from '@mantine/core';
 import Link from 'next/link';
+import { UserRole } from '@/db/schema';
 
 const navigation: NavItem[] = [
   {
     label: 'Users',
     href: '/admin/users',
     icon: IconUsers,
+    roles: ['admin'],
   },
-]
+];
 
-export default function Dashboard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Dashboard({ children }: { children: React.ReactNode }) {
   const { status } = useSession();
 
   if (status == 'loading') {
@@ -41,7 +53,7 @@ export default function Dashboard({
         </Group>
       </Shell.Header>
       <Shell.Navigation>
-        <Navigation navigation={navigation}/>
+        <Navigation navigation={navigation} />
       </Shell.Navigation>
       <Shell.Body>{children}</Shell.Body>
       <Shell.User>
@@ -55,7 +67,7 @@ function UserButton() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  if(!session?.user){
+  if (!session?.user) {
     router.push('/api/auth/signin');
   }
 
@@ -93,9 +105,10 @@ export type NavItem = {
   icon: Icon;
   children?: NavItem[];
   notificationCount?: () => number;
+  roles?: UserRole[];
 };
-  
-export function Navigation({navigation}: {navigation: NavItem[]}) {
+
+export function Navigation({ navigation }: { navigation: NavItem[] }) {
   return (
     <>
       {navigation.map((item, index) => (
@@ -110,21 +123,21 @@ function DisplayWithNotification({ item }: { item: NavItem }) {
     const value = item.notificationCount();
     return (
       <Indicator
-      position='middle-end'
-      color='red'
-      offset={20}
-      size={23}
-      label={value}
-      disabled={!value}
-    >
+        position='middle-end'
+        color='red'
+        offset={20}
+        size={23}
+        label={value}
+        disabled={!value}
+      >
         <ItemDisplay item={item} />
       </Indicator>
     );
   }
   return <ItemDisplay item={item} />;
-};
+}
 
-function ItemDisplay({ item }: { item: NavItem }){
+function ItemDisplay({ item }: { item: NavItem }) {
   const pathname = usePathname();
   const Icon = item.icon;
   const navLink = (
@@ -134,7 +147,9 @@ function ItemDisplay({ item }: { item: NavItem }){
       href={item.href || ''}
       active={item.href ? pathname.startsWith(item.href) : false}
       leftSection={<Icon size='1.1rem' />}
-      rightSection={item.href ? <IconChevronRight size='0.8rem' stroke={1.5} /> : undefined}
+      rightSection={
+        item.href ? <IconChevronRight size='0.8rem' stroke={1.5} /> : undefined
+      }
       opened={!!item.children}
     >
       {item.children?.map((child, index) => (
@@ -143,4 +158,4 @@ function ItemDisplay({ item }: { item: NavItem }){
     </NavLink>
   );
   return navLink;
-};
+}
